@@ -53,4 +53,8 @@ public class RobotService {
         }
         return this.robotModel;
     }
+
+    public RobotModel terminate() {
+        return this.robotModel;
+    }
 }

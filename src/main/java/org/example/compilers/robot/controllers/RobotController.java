@@ -47,12 +47,14 @@ public class RobotController {
                     case '.' -> {
                         if (i != commands.length - 1) {
                             throw new NotEmptyAfterTermCharException("ERROR: There should be nothing after terminating character ");
+                        } else {
+                            statesMap.put(robotService.terminate(), commands[i]);
                         }
                     }
                     default -> throw new UnexpectedCharacterException("ERROR: Unexpected character");
                 }
             }
-        }  catch (UnexpectedCharacterException e) {
+        } catch (UnexpectedCharacterException e) {
             System.out.println(e.getMessage());
         } catch (NoTerminatingCharacterException e) {
             System.out.println(e.getMessage());
