@@ -1,3 +1,3 @@
 # robot
 
-![image](https://user-images.githubusercontent.com/99747059/220159871-4484b86c-baa9-4bd2-b9c0-e0a16b01e8f0.png)
+![image](https://user-images.githubusercontent.com/99747059/227917393-53a43c48-6e85-473b-832e-d56f22a922da.png)
