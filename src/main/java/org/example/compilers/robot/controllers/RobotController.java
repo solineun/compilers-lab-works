@@ -27,6 +27,10 @@ public class RobotController {
 
     public void parseCommands()  {
         String[] commands = robotView.scanCommands().next().split("");
+        stateMachine(commands);
+    }
+
+    private void stateMachine(String[] commands) {
         String[] prevAndCur = new String[] {"", ""};
 
         for (int i = 0; i < commands.length; i++) {
@@ -63,7 +67,6 @@ public class RobotController {
         }
         addRobotState(robotService.setFinish(), "\\w");
     }
-
     public void printResult() {
         robotService.printCoordinates();
         robotView.outputResultAsMap(statesMap);
