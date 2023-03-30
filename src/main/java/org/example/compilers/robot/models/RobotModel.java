@@ -6,25 +6,25 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@ToString(exclude = {"barrierHeight", "barrierWidth"})
+@ToString(exclude = {"barrierHeight", "barrierWidth", "x", "y"})
 public class RobotModel {
     private int x;
     private int y;
-    private Direction direction;
+    private State state;
 
     private final int barrierHeight = 9;
     private final int barrierWidth = 9;
 
-    private RobotModel(int x, int y, Direction direction) {
+    private RobotModel(int x, int y, State direction) {
         this.x = x;
         this.y = y;
-        this.direction = direction;
+        this.state = direction;
     }
 
     private RobotModel() {}
 
     public static RobotModel getStartingRobot() {
-        return new RobotModel(5, 5, Direction.NORTH);
+        return new RobotModel(5, 5, State.NORTH);
     }
 
     public static RobotModel getEmptyRobot() {

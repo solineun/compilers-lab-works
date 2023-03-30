@@ -23,7 +23,7 @@ public class RobotView {
         }
     }
 
-    public void outputResultAsMap(Map<RobotModel, Character> statesMap) {
+    public void outputResultAsMap(Map<RobotModel, String> statesMap) {
         System.out.println(statesMap);
     }
 
