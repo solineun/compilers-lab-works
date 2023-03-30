@@ -9,18 +9,6 @@ public class RobotService {
         this.robotModel = robotModel;
     }
 
-    private int height;
-    public int getHeight() {
-        this.height = robotModel.getBarrierHeight();
-        return this.height;
-    }
-
-    private int width;
-    public int getWidth() {
-        this.width = robotModel.getBarrierWidth();
-        return this.width;
-    }
-
     public RobotModel moveForward() {
         switch (robotModel.getState()) {
             case NORTH -> robotModel.setY(robotModel.getY() + 1);
@@ -49,6 +37,12 @@ public class RobotService {
             case EAST -> robotModel.setState(State.NORTH);
         }
         return this.robotModel;
+    }
+
+    public void printCoordinates() {
+        var start = RobotModel.getStartingRobot();
+        System.out.println("Start point: x = " + start.getX() + ", y = " + start.getY());
+        System.out.println("Finish point: x = " + robotModel.getX() + ", y = " + robotModel.getY());
     }
 
     public RobotModel setError() {

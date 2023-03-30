@@ -1,4 +1,4 @@
-package org.example.compilers.countries.Controllers;
+package org.example.compilers.countries.сontrollers;
 
 public class UnexpextedCharacterException extends Exception{
     public UnexpextedCharacterException(String message) {

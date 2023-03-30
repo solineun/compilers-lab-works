@@ -1,6 +1,6 @@
 package org.example.compilers.countries;
 
-import org.example.compilers.countries.Controllers.AreaController;
+import org.example.compilers.countries.сontrollers.AreaController;
 import org.example.compilers.countries.views.AreaView;
 
 public class CountriesApp {

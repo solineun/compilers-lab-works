@@ -13,9 +13,9 @@ public class RobotController {
     private final RobotView robotView;
     private final RobotService robotService;
 
-    private Map<RobotModel, Character> statesMap = new LinkedHashMap<>();
+    private Map<RobotModel, String> statesMap = new LinkedHashMap<>();
 
-    private void addRobotState(RobotModel robotState, char command) {
+    private void addRobotState(RobotModel robotState, String command) {
         RobotModel emptyRobot = RobotModel.getEmptyRobot();
 
         emptyRobot.setX(robotState.getX());
@@ -26,51 +26,46 @@ public class RobotController {
     }
 
     public void parseCommands()  {
-        try {
-            char[] commands = robotView.scanCommands().next().toCharArray();
-            char[] prevAndCur = new char[] {' ', ' '};
+        String[] commands = robotView.scanCommands().next().split("");
+        String[] prevAndCur = new String[] {"", ""};
 
-            for (int i = 0; i < commands.length; i++) {
-                prevAndCur[0] = prevAndCur[1];
-                prevAndCur[1] = commands[i];
-                if (prevAndCur[0] == '.') {
-                    addRobotState(robotService.setError(), commands[i]);
-                    throw new NotEmptyAfterTermCharException("ERROR: There should be nothing after terminating character ");
-                } else if (i == commands.length - 1 && prevAndCur[1] != '.') {
-                    addRobotState(robotService.setError(), commands[i]);
-                    throw new NoTerminatingCharacterException("ERROR: No terminating character");
+        for (int i = 0; i < commands.length; i++) {
+            prevAndCur[0] = prevAndCur[1];
+            prevAndCur[1] = commands[i];
+            if (prevAndCur[0].equals(".")) {
+                addRobotState(robotService.setError(), commands[i]);
+                System.out.println("ERROR: There should be nothing after terminating character ");
+                break;
+            } else if (i == commands.length - 1 && prevAndCur[1] != ".") {
+                addRobotState(robotService.setError(), commands[i]);
+                System.out.println("ERROR: No terminating character");
+                break;
+            }
+
+            switch (commands[i]) {
+                case "f" -> {
+                    addRobotState(robotService.moveForward(), commands[i]);
                 }
-
-                switch (commands[i]) {
-                    case 'f' -> {
-                        addRobotState(robotService.moveForward(), commands[i]);
-                    }
-                    case 'r' -> {
-                        addRobotState(robotService.turnRight(), commands[i]);
-                    }
-                    case 'l' -> {
-                        addRobotState(robotService.turnLeft(), commands[i]);
-                    }
-                    case '.' -> {
-                        addRobotState(robotService.setTerminate(), commands[i]);
-                    }
-                    default -> {
-                        addRobotState(robotService.setError(), commands[i]);
-                        throw new UnexpectedCharacterException("ERROR: Unexpected character");
-                    }
+                case "r" -> {
+                    addRobotState(robotService.turnRight(), commands[i]);
+                }
+                case "l" -> {
+                    addRobotState(robotService.turnLeft(), commands[i]);
+                }
+                case "." -> {
+                    addRobotState(robotService.setTerminate(), commands[i]);
+                }
+                default -> {
+                    addRobotState(robotService.setError(), commands[i]);
+                    System.out.println("ERROR: Unexpected character");
                 }
             }
-            addRobotState(robotService.setFinish(), '\\');
-        } catch (UnexpectedCharacterException e) {
-            System.out.println(e.getMessage());
-        } catch (NoTerminatingCharacterException e) {
-            System.out.println(e.getMessage());
-        } catch (NotEmptyAfterTermCharException e) {
-            System.out.println(e.getMessage());
         }
+        addRobotState(robotService.setFinish(), "\\w");
     }
 
-    public void sendResult() {
+    public void printResult() {
+        robotService.printCoordinates();
         robotView.outputResultAsMap(statesMap);
         statesMap = new LinkedHashMap<>();
     }
