@@ -5,7 +5,6 @@ import org.example.compilers.robot.models.RobotModel;
 import org.example.compilers.robot.models.service.RobotService;
 import org.example.compilers.robot.views.RobotView;
 
-import java.rmi.NotBoundException;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -21,7 +20,7 @@ public class RobotController {
 
         emptyRobot.setX(robotState.getX());
         emptyRobot.setY(robotState.getY());
-        emptyRobot.setDirection(robotState.getDirection());
+        emptyRobot.setState(robotState.getState());
 
         statesMap.put(emptyRobot, command);
     }
@@ -29,10 +28,19 @@ public class RobotController {
     public void parseCommands()  {
         try {
             char[] commands = robotView.scanCommands().next().toCharArray();
+            char[] prevAndCur = new char[] {' ', ' '};
+
             for (int i = 0; i < commands.length; i++) {
-                if (commands[commands.length-1] != '.') {
+                prevAndCur[0] = prevAndCur[1];
+                prevAndCur[1] = commands[i];
+                if (prevAndCur[0] == '.') {
+                    addRobotState(robotService.setError(), commands[i]);
+                    throw new NotEmptyAfterTermCharException("ERROR: There should be nothing after terminating character ");
+                } else if (i == commands.length - 1 && prevAndCur[1] != '.') {
+                    addRobotState(robotService.setError(), commands[i]);
                     throw new NoTerminatingCharacterException("ERROR: No terminating character");
                 }
+
                 switch (commands[i]) {
                     case 'f' -> {
                         addRobotState(robotService.moveForward(), commands[i]);
@@ -43,17 +51,16 @@ public class RobotController {
                     case 'l' -> {
                         addRobotState(robotService.turnLeft(), commands[i]);
                     }
-                    case ';' -> {continue;}
                     case '.' -> {
-                        if (i != commands.length - 1) {
-                            throw new NotEmptyAfterTermCharException("ERROR: There should be nothing after terminating character ");
-                        } else {
-                            statesMap.put(robotService.terminate(), commands[i]);
-                        }
+                        addRobotState(robotService.setTerminate(), commands[i]);
                     }
-                    default -> throw new UnexpectedCharacterException("ERROR: Unexpected character");
+                    default -> {
+                        addRobotState(robotService.setError(), commands[i]);
+                        throw new UnexpectedCharacterException("ERROR: Unexpected character");
+                    }
                 }
             }
+            addRobotState(robotService.setFinish(), '\\');
         } catch (UnexpectedCharacterException e) {
             System.out.println(e.getMessage());
         } catch (NoTerminatingCharacterException e) {
