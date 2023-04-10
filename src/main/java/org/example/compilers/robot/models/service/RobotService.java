@@ -15,6 +15,7 @@ public class RobotService {
             case SOUTH -> robotModel.setY(robotModel.getY() - 1);
             case EAST -> robotModel.setX(robotModel.getX() + 1);
             case WEST -> robotModel.setX(robotModel.getX() - 1);
+            case TERMINATE -> robotModel.setState(State.ERROR);
         }
         return this.robotModel;
     }
@@ -25,6 +26,7 @@ public class RobotService {
             case EAST -> robotModel.setState(State.SOUTH);
             case SOUTH -> robotModel.setState(State.WEST);
             case WEST -> robotModel.setState(State.NORTH);
+            case TERMINATE -> robotModel.setState(State.ERROR);
         }
         return this.robotModel;
     }
@@ -35,6 +37,7 @@ public class RobotService {
             case WEST -> robotModel.setState(State.SOUTH);
             case SOUTH-> robotModel.setState(State.EAST);
             case EAST -> robotModel.setState(State.NORTH);
+            case TERMINATE -> robotModel.setState(State.ERROR);
         }
         return this.robotModel;
     }
@@ -49,12 +52,24 @@ public class RobotService {
         robotModel.setState(State.ERROR);
         return this.robotModel;
     }
+
     public RobotModel setTerminate() {
-        robotModel.setState(State.TERMINATE);
+        switch (robotModel.getState()) {
+            case TERMINATE -> robotModel.setState(State.ERROR);
+            case ERROR -> {}
+            default -> robotModel.setState(State.TERMINATE);
+        }
         return this.robotModel;
     }
     public RobotModel setFinish() {
-        robotModel.setState(State.FINISH);
-        return this.robotModel;
+        if (this.robotModel.getState() == State.ERROR) {
+            return this.robotModel;
+        } else if (this.robotModel.getState() == State.TERMINATE){
+            robotModel.setState(State.FINISH);
+            return this.robotModel;
+        } else {
+            robotModel.setState(State.ERROR);
+            return this.robotModel;
+        }
     }
 }

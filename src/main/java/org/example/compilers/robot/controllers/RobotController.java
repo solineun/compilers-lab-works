@@ -2,6 +2,7 @@ package org.example.compilers.robot.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.example.compilers.robot.models.RobotModel;
+import org.example.compilers.robot.models.State;
 import org.example.compilers.robot.models.service.RobotService;
 import org.example.compilers.robot.views.RobotView;
 
@@ -16,8 +17,13 @@ public class RobotController {
     private Map<RobotModel, String> statesMap = new LinkedHashMap<>();
 
     private void addRobotState(RobotModel robotState, String command) {
-        RobotModel emptyRobot = RobotModel.getEmptyRobot();
+<<<<<<< HEAD
+        if (robotState.getState() != State.ERROR && !"\\w".equals(command)) {
 
+        }
+=======
+>>>>>>> main
+        RobotModel emptyRobot = RobotModel.getEmptyRobot();
         emptyRobot.setX(robotState.getX());
         emptyRobot.setY(robotState.getY());
         emptyRobot.setState(robotState.getState());
@@ -31,21 +37,13 @@ public class RobotController {
     }
 
     private void stateMachine(String[] commands) {
-        String[] prevAndCur = new String[] {"", ""};
+<<<<<<< HEAD
+        for (int i = 0; i < commands.length; i++) {
+=======
 
         for (int i = 0; i < commands.length; i++) {
-            prevAndCur[0] = prevAndCur[1];
-            prevAndCur[1] = commands[i];
-            if (prevAndCur[0].equals(".")) {
-                addRobotState(robotService.setError(), commands[i]);
-                System.out.println("ERROR: There should be nothing after terminating character ");
-                break;
-            } else if (i == commands.length - 1 && prevAndCur[1] != ".") {
-                addRobotState(robotService.setError(), commands[i]);
-                System.out.println("ERROR: No terminating character");
-                break;
-            }
 
+>>>>>>> main
             switch (commands[i]) {
                 case "f" -> {
                     addRobotState(robotService.moveForward(), commands[i]);
@@ -61,7 +59,6 @@ public class RobotController {
                 }
                 default -> {
                     addRobotState(robotService.setError(), commands[i]);
-                    System.out.println("ERROR: Unexpected character");
                 }
             }
         }
