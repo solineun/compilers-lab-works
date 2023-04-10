@@ -52,6 +52,7 @@ public class RobotService {
         robotModel.setState(State.ERROR);
         return this.robotModel;
     }
+
     public RobotModel setTerminate() {
         switch (robotModel.getState()) {
             case TERMINATE -> robotModel.setState(State.ERROR);

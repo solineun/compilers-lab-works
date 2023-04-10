@@ -17,9 +17,6 @@ public class RobotController {
     private Map<RobotModel, String> statesMap = new LinkedHashMap<>();
 
     private void addRobotState(RobotModel robotState, String command) {
-        if (robotState.getState() != State.ERROR && !"\\w".equals(command)) {
-
-        }
         RobotModel emptyRobot = RobotModel.getEmptyRobot();
         emptyRobot.setX(robotState.getX());
         emptyRobot.setY(robotState.getY());
@@ -34,7 +31,9 @@ public class RobotController {
     }
 
     private void stateMachine(String[] commands) {
+
         for (int i = 0; i < commands.length; i++) {
+
             switch (commands[i]) {
                 case "f" -> {
                     addRobotState(robotService.moveForward(), commands[i]);
